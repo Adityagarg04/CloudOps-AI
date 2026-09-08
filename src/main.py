@@ -1,5 +1,11 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, status
 from pydantic import BaseModel, Field, field_validator
+from sqlalchemy.orm import Session
+
+from src.crud import create_user, get_user_by_id, list_users
+from src.database import SessionLocal, init_db
+from src.models import User
+from src.schemas import UserCreate, UserResponse
 
 app = FastAPI(
     title="CloudOps AI",
@@ -26,6 +32,11 @@ class HelloMessage(BaseModel):
 
 class HelloResponse(BaseModel):
     message: str
+
+
+@app.on_event("startup")
+def startup_event():
+    init_db()
 
 
 @app.get("/health")
@@ -69,3 +80,38 @@ async def delete_hello():
     previous = hello_state["message"]
     hello_state["message"] = "hello"
     return {"deleted": previous, "message": "hello"}
+
+
+@app.post("/users", response_model=UserResponse, status_code=status.HTTP_201_CREATED)
+def create_user_endpoint(payload: UserCreate):
+    db: Session = SessionLocal()
+    try:
+        try:
+            user = create_user(db, payload.name, payload.email)
+        except ValueError as exc:
+            raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail=str(exc)) from exc
+        return user
+    finally:
+        db.close()
+
+
+@app.get("/users", response_model=list[UserResponse])
+def list_users_endpoint():
+    db: Session = SessionLocal()
+    try:
+        users = list_users(db)
+        return users
+    finally:
+        db.close()
+
+
+@app.get("/users/{user_id}", response_model=UserResponse)
+def get_user_endpoint(user_id: int):
+    db: Session = SessionLocal()
+    try:
+        user = get_user_by_id(db, user_id)
+        if user is None:
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="User not found")
+        return user
+    finally:
+        db.close()

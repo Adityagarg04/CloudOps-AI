@@ -28,6 +28,11 @@ Day 5: Pydantic validation and request models
 Day 6: API docs and Swagger review
 - Status: Completed
 - Problems: None
+- Next: User CRUD API
+
+User CRUD API
+- Status: In progress
+- Problems: None
 - Next: Review and clean-up
 
 Acceptance criteria:
@@ -35,6 +40,8 @@ Acceptance criteria:
 - GET/POST/PUT/PATCH/DELETE methods are demonstrated on /hello
 - Request payloads use Pydantic models and reject invalid input
 - FastAPI docs are available at /docs and /openapi.json
+- User API supports create/list/get by ID
+- Duplicate emails return 409 and not-found returns 404
 - requirements.txt includes pytest and httpx
 - README.md describes the current endpoints and validation rules
 
