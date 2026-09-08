@@ -41,3 +41,13 @@ def test_hello_invalid_input_is_rejected():
     response = client.post("/hello", json={"message": "x" * 51})
     assert response.status_code == 422
     assert "at most 50 characters" in response.text
+
+
+def test_docs_endpoints_are_available():
+    response = client.get("/docs")
+    assert response.status_code == 200
+    assert "swagger" in response.text.lower()
+
+    response = client.get("/openapi.json")
+    assert response.status_code == 200
+    assert response.json()["info"]["title"] == "CloudOps AI"

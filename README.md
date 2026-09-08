@@ -1,4 +1,4 @@
-CloudOps AI — scaffold + REST API + validation basics
+CloudOps AI — scaffold + REST API + validation + docs basics
 
 Quick start:
 1. Create a virtual environment: python -m venv .venv
@@ -14,6 +14,9 @@ Endpoints:
 - PUT /hello -> replace the hello message
 - PATCH /hello -> update the hello message
 - DELETE /hello -> reset to default hello message
+- GET /docs -> Swagger UI for exploring the API
+- GET /openapi.json -> machine-readable schema
+- GET /redoc -> alternative API docs UI
 
 Validation note:
 - The /hello request payload uses Pydantic models.

@@ -25,16 +25,22 @@ Day 5: Pydantic validation and request models
 - Problems: None
 - Next: API docs and Swagger review
 
+Day 6: API docs and Swagger review
+- Status: Completed
+- Problems: None
+- Next: Review and clean-up
+
 Acceptance criteria:
 - src/main.py contains health and hello routes
 - GET/POST/PUT/PATCH/DELETE methods are demonstrated on /hello
 - Request payloads use Pydantic models and reject invalid input
+- FastAPI docs are available at /docs and /openapi.json
 - requirements.txt includes pytest and httpx
 - README.md describes the current endpoints and validation rules
 
 ---
 
-Day 6: API docs and Swagger review
+Review and clean-up
 ...
 
 (Use this file as the source of truth for daily progress.)

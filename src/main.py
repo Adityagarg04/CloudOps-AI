@@ -1,7 +1,13 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, field_validator
 
-app = FastAPI(title="CloudOps AI - Dev")
+app = FastAPI(
+    title="CloudOps AI",
+    description="Local FastAPI API for the CloudOps AI project. This app is used for health checks, minimal REST examples, and API documentation review.",
+    version="0.1.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
 
 hello_state = {"message": "hello"}
 
@@ -32,33 +38,33 @@ async def root():
     return {"message": "CloudOps AI - FastAPI scaffold"}
 
 
-@app.get("/hello", response_model=HelloResponse)
+@app.get("/hello", response_model=HelloResponse, summary="Get the current hello message")
 async def get_hello():
     return HelloResponse(message=hello_state["message"])
 
 
-@app.post("/hello", status_code=201, response_model=HelloResponse)
+@app.post("/hello", status_code=201, response_model=HelloResponse, summary="Create or set a hello message")
 async def create_hello(payload: HelloMessage):
     new_message = payload.message
     hello_state["message"] = new_message
     return HelloResponse(message=f"created: {new_message}")
 
 
-@app.put("/hello", response_model=HelloResponse)
+@app.put("/hello", response_model=HelloResponse, summary="Replace the hello message")
 async def replace_hello(payload: HelloMessage):
     new_message = payload.message
     hello_state["message"] = new_message
     return HelloResponse(message=f"updated: {new_message}")
 
 
-@app.patch("/hello", response_model=HelloResponse)
+@app.patch("/hello", response_model=HelloResponse, summary="Update the hello message")
 async def update_hello(payload: HelloMessage):
     new_message = payload.message
     hello_state["message"] = new_message
     return HelloResponse(message=f"patched: {new_message}")
 
 
-@app.delete("/hello")
+@app.delete("/hello", summary="Reset the hello message to the default value")
 async def delete_hello():
     previous = hello_state["message"]
     hello_state["message"] = "hello"
